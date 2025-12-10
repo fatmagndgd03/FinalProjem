@@ -6,6 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Sepet; 
+use App\Models\Favori;
 
 class User extends Authenticatable
 {
@@ -32,7 +34,19 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+// Sepet İlişkisi: Bir kullanıcının birden çok sepet öğesi olabilir
+    public function sepetOgeleri()
+    {
+        // hasMany, bu modelin (User) id'sinin, Sepet tablosundaki user_id alanıyla eşleştiğini söyler.
+        return $this->hasMany(Sepet::class);
+    }
 
+    // Favori İlişkisi: Bir kullanıcının birden çok favori öğesi olabilir
+    public function favoriler()
+    {
+        return $this->hasMany(Favori::class);
+    }
+    
     /**
      * Get the attributes that should be cast.
      *
