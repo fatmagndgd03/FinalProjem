@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Kategori extends Model
 {
     // HasFactory'i kullanabilmek için buraya ekliyoruz:
-    use HasFactory; 
+    use HasFactory;
+
+    protected $table = 'kategoriler'; // Tablo adı varsayılan (kategoris) değil
 
     // Mass Assignment Koruması
     protected $fillable = ['ad', 'slug', 'aciklama'];

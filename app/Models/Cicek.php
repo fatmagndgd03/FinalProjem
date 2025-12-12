@@ -9,8 +9,10 @@ class Cicek extends Model
 {
     use HasFactory;
 
+    protected $table = 'cicekler'; // Tablo adı varsayılan (ciceks) değil
+
     protected $fillable = ['kategori_id', 'ad', 'slug', 'aciklama', 'fiyat', 'stok', 'fotograf_yolu', 'aktif_mi'];
-    
+
     public function kategori()
     {
         return $this->belongsTo(Kategori::class);

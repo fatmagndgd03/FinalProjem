@@ -11,8 +11,7 @@ class CicekKontrolcu extends Controller
      */
     public function index()
     {
-        // Şimdilik sadece ana şablonumuzu çağırıp içeriği boş bırakıyoruz.
-        // Ana sayfamız için bir "anasayfa.blade.php" dosyası oluşturmamız gerekiyor.
-        return view('anasayfa'); 
+        $products = \App\Models\Cicek::where('aktif_mi', true)->with('kategori')->orderBy('created_at', 'desc')->take(8)->get();
+        return view('anasayfa', compact('products'));
     }
 }
