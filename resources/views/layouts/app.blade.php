@@ -18,6 +18,12 @@
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}" />
 
     @yield('styles')
+    <style>
+        .header.navbar-area {
+            border-bottom: 4px solid #ffffff !important;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 
 <body>
@@ -39,15 +45,16 @@
     </div>
     <!-- /End Preloader -->
 
+    @section('header')
     <!-- Start Header Area -->
     <header class="header navbar-area">
-        <div class="container">
+        <div class="container-fluid" style="padding-left: 30px; padding-right: 30px;"> <!-- Increased width -->
             <div class="row align-items-center">
                 <div class="col-lg-12">
                     <div class="nav-inner">
                         <!-- Start Navbar -->
                         <nav class="navbar navbar-expand-lg">
-                            <a class="navbar-brand" href="{{ route('home') }}">
+                            <a class="navbar-brand" href="{{ route('home') }}" style="margin-right: 30px;">
                                 <img src="{{ asset('assets/images/logo/white-logo.svg') }}" alt="Logo">
                             </a>
                             <button class="navbar-toggler mobile-menu-btn" type="button" data-bs-toggle="collapse"
@@ -58,34 +65,48 @@
                                 <span class="toggler-icon"></span>
                             </button>
                             <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
-                                <ul id="nav" class="navbar-nav ms-auto">
+                                <!-- LEFT GROUP: Main Navigation (Logo's neighbor) -->
+                                <ul class="navbar-nav me-auto">
                                     <li class="nav-item">
                                         <a href="{{ route('home') }}" aria-label="Toggle navigation">Anasayfa</a>
                                     </li>
+                                    <!-- Other main info links can go here (e.g., Features, Pricing) -->
+                                </ul>
+
+                                <!-- RIGHT GROUP: Auth Buttons (Far Right) -->
+                                <ul class="navbar-nav ms-auto">
                                     @auth
+                                        @if (auth()->user()->role === 'admin')
+                                            <li class="nav-item">
+                                                <a href="{{ route('admin.products.index') }}">Admin Paneli</a>
+                                            </li>
+                                        @endif
                                         <li class="nav-item">
                                             <a href="{{ route('profile') }}">Profilim</a>
                                         </li>
-                                    @else
+                                        <li class="nav-item">
+                                            <a href="javascript:void(0)"
+                                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                                <i class="lni lni-exit"></i> Çıkış Yap
+                                            </a>
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                                class="d-none">
+                                                @csrf
+                                            </form>
+                                        </li>
+                                    @endauth
+
+                                    @guest
                                         <li class="nav-item">
                                             <a href="{{ route('login') }}">Giriş</a>
                                         </li>
                                         <li class="nav-item">
                                             <a href="{{ route('register') }}">Kayıt Ol</a>
                                         </li>
-                                    @endauth
+                                    @endguest
                                 </ul>
                             </div> <!-- navbar collapse -->
-                            <div class="button add-list-button">
-                                @auth
-                                    <form method="POST" action="{{ route('logout') }}" style="display:inline;">
-                                        @csrf
-                                        <button type="submit" class="btn">Çıkış Yap</button>
-                                    </form>
-                                @else
-                                    <a href="{{ route('register') }}" class="btn">Hemen Başla</a>
-                                @endauth
-                            </div>
+                            <!-- Removed standalone button container to force everything into the navbar alignment -->
                         </nav>
                         <!-- End Navbar -->
                     </div>
@@ -94,6 +115,8 @@
         </div> <!-- container -->
     </header>
     <!-- End Header Area -->
+    @show
+
 
     <!-- Content Wrapper -->
     <div style="padding-top: 150px; padding-bottom: 50px; min-height: 60vh;">

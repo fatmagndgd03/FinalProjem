@@ -105,10 +105,41 @@
     </style>
 @endsection
 
+@section('header')
+    @if(Auth::user()->role === 'admin')
+        <!-- Admin-Specific Clean Header (Logo Only) -->
+        <header class="header navbar-area" style="background: #fff; border-bottom: 1px solid #eee; padding: 0;">
+            <div class="container-fluid" style="padding-left: 30px; padding-right: 30px;">
+                <div class="row align-items-center">
+                    <div class="col-lg-12">
+                        <div class="nav-inner">
+                            <nav class="navbar navbar-expand-lg">
+                                <a class="navbar-brand" href="{{ route('home') }}" style="margin-right: 30px;">
+                                    <img src="{{ asset('assets/images/logo/logo.svg') }}" alt="Logo" style="height: 40px;">
+                                </a>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    @else
+        @parent
+    @endif
+@endsection
+
 @section('content')
 
     <!-- Profile Header -->
-    <div class="profile-header">
+    <div class="profile-header" style="position: relative;">
+        <!-- Back Arrow for Admin -->
+        @if(Auth::user()->role === 'admin')
+            <a href="{{ route('home') }}"
+                style="position: absolute; left: 40px; top: 40px; color: white; font-size: 20px; font-weight: 600; text-decoration: none; display: flex; align-items: center;">
+                <i class="lni lni-arrow-left" style="margin-right: 5px; font-size: 24px;"></i> Anasayfa
+            </a>
+        @endif
+
         <div class="container">
             <div class="profile-avatar">
                 {{ strtoupper(substr($user->name, 0, 1)) }}
@@ -117,6 +148,7 @@
             <p class="mb-0">{{ $user->email }}</p>
         </div>
     </div>
+
 
     <div class="container" style="padding-bottom: 80px;">
         @if(session('success'))
@@ -191,106 +223,106 @@
                         </div>
                     </div>
 
-                        @if($user->role !== 'admin')
-                            <!-- Addresses Tab -->
-                            <div class="tab-pane fade" id="v-pills-address" role="tabpanel">
-                                <div class="card mb-4">
-                                    <div class="card-header">Yeni Adres Ekle</div>
-                                    <div class="card-body p-4">
-                                        <form action="{{ route('profile.address.store') }}" method="POST">
-                                            @csrf
-                                            <div class="row">
-                                                <div class="col-md-4 mb-3">
-                                                    <label class="form-label">Adres Başlığı</label>
-                                                    <input type="text" name="title" class="form-control" placeholder="Örn: Ev, İş">
-                                                </div>
-                                                <div class="col-md-4 mb-3">
-                                                    <label class="form-label">Şehir</label>
-                                                    <input type="text" name="city" class="form-control" placeholder="İstanbul">
-                                                </div>
-                                                <div class="col-md-12 mb-3">
-                                                    <label class="form-label">Açık Adres</label>
-                                                    <textarea name="address" class="form-control" rows="2"
-                                                        placeholder="Mahalle, Cadde, Sokak, No..."></textarea>
-                                                </div>
+                    @if($user->role !== 'admin')
+                        <!-- Addresses Tab -->
+                        <div class="tab-pane fade" id="v-pills-address" role="tabpanel">
+                            <div class="card mb-4">
+                                <div class="card-header">Yeni Adres Ekle</div>
+                                <div class="card-body p-4">
+                                    <form action="{{ route('profile.address.store') }}" method="POST">
+                                        @csrf
+                                        <div class="row">
+                                            <div class="col-md-4 mb-3">
+                                                <label class="form-label">Adres Başlığı</label>
+                                                <input type="text" name="title" class="form-control" placeholder="Örn: Ev, İş">
                                             </div>
-                                            <button type="submit" class="btn btn-primary">Ekle</button>
-                                        </form>
-                                    </div>
-                                </div>
-
-                                <div class="card">
-                                    <div class="card-header">Kayıtlı Adreslerim</div>
-                                    <div class="card-body p-4">
-                                        @if($addresses->isEmpty())
-                                            <p class="text-muted text-center py-3">Henüz kayıtlı adresiniz bulunmuyor.</p>
-                                        @else
-                                            <div class="row">
-                                                @foreach($addresses as $address)
-                                                    <div class="col-md-6 mb-3">
-                                                        <div class="address-card">
-                                                            <form action="{{ route('profile.address.destroy', $address->id) }}"
-                                                                method="POST"
-                                                                onsubmit="return confirm('Silmek istediğinize emin misiniz?');">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="btn btn-link delete-address p-0 border-0"><i
-                                                                        class="lni lni-trash"></i></button>
-                                                            </form>
-                                                            <h5 class="mb-2">{{ $address->title }}</h5>
-                                                            <p class="mb-1 text-muted">{{ $address->city }}</p>
-                                                            <p class="small">{{ $address->address }}</p>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
+                                            <div class="col-md-4 mb-3">
+                                                <label class="form-label">Şehir</label>
+                                                <input type="text" name="city" class="form-control" placeholder="İstanbul">
                                             </div>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Orders Tab -->
-                            <div class="tab-pane fade" id="v-pills-orders" role="tabpanel">
-                                <div class="card">
-                                    <div class="card-header">Sipariş Geçmişim</div>
-                                    <div class="card-body p-0">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover mb-0">
-                                                <thead style="background-color: #f8f9fa;">
-                                                    <tr>
-                                                        <th class="p-3 border-0">Sipariş No</th>
-                                                        <th class="p-3 border-0">Tarih</th>
-                                                        <th class="p-3 border-0">Tutar</th>
-                                                        <th class="p-3 border-0">Durum</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @forelse($orders as $order)
-                                                        <tr>
-                                                            <td class="p-3">#{{ $order->order_number }}</td>
-                                                            <td class="p-3">{{ $order->created_at->format('d.m.Y') }}</td>
-                                                            <td class="p-3">{{ number_format($order->total_price, 2) }} ₺</td>
-                                                            <td class="p-3">
-                                                                <span
-                                                                    class="badge bg-secondary rounded-pill px-3">{{ $order->status }}</span>
-                                                            </td>
-                                                        </tr>
-                                                    @empty
-                                                        <tr>
-                                                            <td colspan="4" class="text-center p-5 text-muted">
-                                                                <i class="lni lni-shopping-basket mb-3 d-block"
-                                                                    style="font-size: 30px;"></i>
-                                                                Henüz hiç sipariş vermediniz.
-                                                            </td>
-                                                        </tr>
-                                                    @endforelse
-                                                </tbody>
-                                            </table>
+                                            <div class="col-md-12 mb-3">
+                                                <label class="form-label">Açık Adres</label>
+                                                <textarea name="address" class="form-control" rows="2"
+                                                    placeholder="Mahalle, Cadde, Sokak, No..."></textarea>
+                                            </div>
                                         </div>
+                                        <button type="submit" class="btn btn-primary">Ekle</button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">Kayıtlı Adreslerim</div>
+                                <div class="card-body p-4">
+                                    @if($addresses->isEmpty())
+                                        <p class="text-muted text-center py-3">Henüz kayıtlı adresiniz bulunmuyor.</p>
+                                    @else
+                                        <div class="row">
+                                            @foreach($addresses as $address)
+                                                <div class="col-md-6 mb-3">
+                                                    <div class="address-card">
+                                                        <form action="{{ route('profile.address.destroy', $address->id) }}"
+                                                            method="POST"
+                                                            onsubmit="return confirm('Silmek istediğinize emin misiniz?');">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-link delete-address p-0 border-0"><i
+                                                                    class="lni lni-trash"></i></button>
+                                                        </form>
+                                                        <h5 class="mb-2">{{ $address->title }}</h5>
+                                                        <p class="mb-1 text-muted">{{ $address->city }}</p>
+                                                        <p class="small">{{ $address->address }}</p>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Orders Tab -->
+                        <div class="tab-pane fade" id="v-pills-orders" role="tabpanel">
+                            <div class="card">
+                                <div class="card-header">Sipariş Geçmişim</div>
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead style="background-color: #f8f9fa;">
+                                                <tr>
+                                                    <th class="p-3 border-0">Sipariş No</th>
+                                                    <th class="p-3 border-0">Tarih</th>
+                                                    <th class="p-3 border-0">Tutar</th>
+                                                    <th class="p-3 border-0">Durum</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse($orders as $order)
+                                                    <tr>
+                                                        <td class="p-3">#{{ $order->order_number }}</td>
+                                                        <td class="p-3">{{ $order->created_at->format('d.m.Y') }}</td>
+                                                        <td class="p-3">{{ number_format($order->total_price, 2) }} ₺</td>
+                                                        <td class="p-3">
+                                                            <span
+                                                                class="badge bg-secondary rounded-pill px-3">{{ $order->status }}</span>
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="4" class="text-center p-5 text-muted">
+                                                            <i class="lni lni-shopping-basket mb-3 d-block"
+                                                                style="font-size: 30px;"></i>
+                                                            Henüz hiç sipariş vermediniz.
+                                                        </td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
-                        @endif
+                        </div>
+                    @endif
 
                 </div>
             </div>
