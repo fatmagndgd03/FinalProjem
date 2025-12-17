@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\Route;
 // --- E-TİCARET ÖN YÜZ ROTASI ---
 // Ana Sayfa Rotası
 Route::get('/', [CicekKontrolcu::class, 'index'])->name('home');
+Route::get('/urun/{slug}', [CicekKontrolcu::class, 'show'])->name('urun.detay');
+Route::get('/kategori/{slug}', [CicekKontrolcu::class, 'category'])->name('kategori');
+Route::view('/hakkimizda', 'hakkimizda')->name('hakkimizda');
+Route::view('/iletisim', 'iletisim')->name('iletisim');
+
+// --- SEPET ROTALARI ---
+Route::get('sepet', [App\Http\Controllers\SepetController::class, 'index'])->name('sepet.index');
+Route::post('sepet-ekle', [App\Http\Controllers\SepetController::class, 'add'])->name('sepet.add');
+Route::post('sepet-guncelle', [App\Http\Controllers\SepetController::class, 'update'])->name('sepet.update');
+Route::post('sepet-sil', [App\Http\Controllers\SepetController::class, 'remove'])->name('sepet.remove');
 
 // --- KİMLİK DOĞRULAMA (AUTH) ROTALARI ---
 

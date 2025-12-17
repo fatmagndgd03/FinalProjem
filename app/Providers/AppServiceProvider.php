@@ -19,6 +19,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Tüm view'larda kategorilere erişebilmek için paylaşıyoruz
+        if (\Illuminate\Support\Facades\Schema::hasTable('kategoriler')) {
+            $categories = \App\Models\Kategori::all();
+            \Illuminate\Support\Facades\View::share('categories', $categories);
+        }
     }
 }

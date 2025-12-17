@@ -78,7 +78,7 @@
             </div>
         </div>
         <div class="card-footer bg-white">
-            {{ $products->links() }}
+            {{ $products->links('vendor.pagination.admin-simple') }}
         </div>
     </div>
 @endsection

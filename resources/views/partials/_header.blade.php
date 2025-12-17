@@ -3,58 +3,98 @@
 <header class="header navbar-area">
     <!-- Added inline style for the requested white border -->
     <style>
-        /* 1. White Frame for the entire Header */
+        /* 1. Header Styling (Pink Background) */
         .header.navbar-area {
-            border: 3px solid #ffffff !important;
-            /* Frame entire header */
-            border-top: none;
-            /* Optional: if top border implies separated from top of screen, but user said 'frame'. Let's keep box or just bottom? 'tüm headeri çerçevelemesini' -> all sides? Safe to do all or bottom/top/sides. Let's do all. */
-        }
-
-        /* 2. Main Links Downward Alignment */
-        #nav-main-links {
-            align-self: flex-end !important;
-            margin-bottom: 5px;
-            /* Fine tune to push text down */
-        }
-
-        /* 4. Dynamic Auth Button Styles */
-        /* Default (Top of page): White Background, Pink Text */
-        .btn-auth-custom {
-            background-color: #ffffff !important;
-            color: #FF6B81 !important;
-            border: 1px solid #FF6B81 !important;
-            /* Adding border to make sure it's visible if bg is white */
-            padding: 8px 15px !important;
-            border-radius: 30px !important;
-            font-weight: bold !important;
-            margin-right: 5px !important;
-            /* 3. Closer spacing */
-            transition: all 0.3s ease;
-        }
-
-        /* Sticky State (On Scroll): Pink Background, White Text */
-        /* Assuming 'sticky' class is added to header by main.js */
-        .sticky .btn-auth-custom {
             background-color: #FF6B81 !important;
-            color: #ffffff !important;
-            border-color: #FF6B81 !important;
+            position: relative !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 0px;
+            z-index: 99;
         }
 
-        /* Links in the main nav should be aligned bottom */
-        .navbar-nav .nav-item .page-scroll {
-            /* Existing styles might have padding, we rely on flex-end on the UL */
+        /* 2. Flex Container Settings */
+        .navbar {
+            min-height: 80px;
+            align-items: stretch !important;
+            /* Allow children to manage their own alignment */
+        }
+
+        /* 3. Logo Alignment: Center */
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            /* Center content vertically */
+            align-self: center !important;
+            /* Center the brand element itself in the flex container */
+            margin-right: 20px;
+            margin-bottom: 0 !important;
+            height: auto;
+        }
+
+        /* 4. Collapse Area */
+        .navbar-collapse {
+            align-items: stretch !important;
+            /* Fill height */
+        }
+
+        /* 5. Main Links: Bottom Alignment */
+        #nav-main-links {
+            display: flex;
+            /* Ensure it's flex */
+            align-items: flex-end !important;
+            /* Align items to bottom */
+            margin-bottom: 0px !important;
+            padding-bottom: 0px;
+            height: 100%;
+            /* Take full height */
+        }
+
+        #nav-main-links .nav-item {
+            display: flex;
+            align-items: flex-end;
+            /* Ensure li content sits at bottom */
+            height: 100%;
+        }
+
+        #nav-main-links .nav-item a {
+            color: #ffffff !important;
+            padding-bottom: 15px !important;
+            /* Add some padding so text isn't cut off at very edge */
+            display: block;
+            font-size: 16px !important;
+            /* Reverted to 16px */
+            font-weight: 600 !important;
+            text-transform: none !important;
+            /* Only first letter capital (as in HTML) */
+        }
+
+        #nav-main-links .nav-item a:hover {
+            color: #f0f0f0 !important;
+        }
+
+        /* 6. Auth Buttons: Center Alignment */
+        .navbar-nav.ms-auto {
+            align-self: center !important;
+            /* Center the auth buttons block */
+            margin-bottom: 0 !important;
         }
     </style>
+
+    <!-- Add ID to Logo for JS swapping -->
     <div class="container-fluid" style="padding-left: 30px; padding-right: 30px;">
         <div class="row align-items-center">
             <div class="col-lg-12">
                 <div class="nav-inner">
                     <!-- Start Navbar -->
                     <nav class="navbar navbar-expand-lg">
-                        <a class="navbar-brand" href="{{ route('home') }}" style="margin-right: 20px;">
-                            <img src="{{ asset('assets/images/logo/white-logo.svg') }}" alt="Logo">
+                        <!-- Min height to ensure logo has space to center -->
+                        <a class="navbar-brand" href="{{ route('home') }}">
+                            <img id="header-logo" src="{{ asset('assets/images/logo/white-logo.svg') }}" alt="Logo">
                         </a>
+
+                        <!-- ... rest of navbar ... -->
+
+
                         <button class="navbar-toggler mobile-menu-btn" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
@@ -63,45 +103,52 @@
                             <span class="toggler-icon"></span>
                         </button>
                         <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
-                            <!-- Group 2: Main Links (Left Aligned next to logo, pushed down) -->
+                            <!-- Group 2: Main Links (Bottom Aligned) -->
                             <ul id="nav-main-links" class="navbar-nav me-auto">
                                 <li class="nav-item">
-                                    <a href="#home" class="page-scroll active"
+                                    <a href="{{ route('home') }}" class="active"
                                         aria-label="Toggle navigation">Anasayfa</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#features" class="page-scroll"
-                                        aria-label="Toggle navigation">Özellikler</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="javascript:void(0)" aria-label="Toggle navigation">Genel Bakış</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#pricing" class="page-scroll"
-                                        aria-label="Toggle navigation">Fiyatlandırma</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="javascript:void(0)" aria-label="Toggle navigation">Ekip</a>
+                                    <a href="{{ route('home') }}" aria-label="Toggle navigation">Ürünler</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="dd-menu collapsed" href="javascript:void(0)" data-bs-toggle="collapse"
                                         data-bs-target="#submenu-1-4" aria-controls="navbarSupportedContent"
-                                        aria-expanded="false" aria-label="Toggle navigation">Blog</a>
+                                        aria-expanded="false" aria-label="Toggle navigation">Kategoriler</a>
                                     <ul class="sub-menu collapse" id="submenu-1-4">
-                                        <li class="nav-item"><a href="javascript:void(0)">Blog Grid Sidebar</a>
-                                        </li>
-                                        <li class="nav-item"><a href="javascript:void(0)">Blog Single</a></li>
-                                        <li class="nav-item"><a href="javascript:void(0)">Blog Single
-                                                Sibebar</a></li>
+                                        @foreach($categories as $category)
+                                            <li class="nav-item"><a
+                                                    href="{{ route('kategori', $category->slug) }}">{{ $category->ad }}</a>
+                                            </li>
+                                        @endforeach
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="javascript:void(0)" aria-label="Toggle navigation">İletişim</a>
+                                    <a href="{{ route('hakkimizda') }}" aria-label="Toggle navigation">Hakkımızda</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('iletisim') }}" aria-label="Toggle navigation">İletişim</a>
+                                </li>
+                                <!-- Blog tab added here as requested -->
+                                <li class="nav-item">
+                                    <a href="javascript:void(0)" aria-label="Toggle navigation">Blog</a>
                                 </li>
                             </ul>
 
-                            <!-- Group 3: Auth Buttons (Right Aligned, Closer Spacing, Custom Colors) -->
+                            <!-- Group 3: Auth Buttons (Centered) -->
                             <ul class="navbar-nav ms-auto align-items-center">
+                                <!-- Cart Icon -->
+                                <li class="nav-item">
+                                    <a href="{{ route('sepet.index') }}" class="btn-auth-custom"
+                                        style="display: flex; align-items: center; justify-content: center; margin-right: 5px;">
+                                        <i class="lni lni-cart"></i>
+                                        <span id="cart-count" class="ms-1 badge bg-danger rounded-pill"
+                                            style="{{ session('sepet') ? '' : 'display:none;' }}">{{ session('sepet') ? count(session('sepet')) : 0 }}</span>
+                                    </a>
+                                </li>
+
+                                <!-- Add margin bottom to auth buttons to align them a bit up if needed, or 0 for bottom -->
                                 @auth
                                     @if(Auth::user()->role === 'admin')
                                         <li class="nav-item">
@@ -118,7 +165,7 @@
                                             @csrf
                                             <button type="submit" class="btn-auth-custom"
                                                 style="display: flex; align-items: center; justify-content: center;">
-                                                <i class="lni lni-exit"></i>
+                                                <i class="lni lni-enter"></i> <!-- Reverted icon -->
                                             </button>
                                         </form>
                                     </li>
@@ -143,3 +190,58 @@
     </div> <!-- container -->
 </header>
 <!-- End Header Area -->
+
+<!-- AJAX Cart Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const forms = document.querySelectorAll('form[action="{{ route("sepet.add") }}"]');
+
+        forms.forEach(form => {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const formData = new FormData(this);
+                const button = this.querySelector('button[type="submit"]');
+                const originalText = button.innerHTML;
+
+                // Optional: Change button state
+                button.disabled = true;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Ekleniyor...';
+
+                fetch('{{ route("sepet.add") }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Update Cart Count
+                            const cartCountEl = document.getElementById('cart-count');
+                            if (cartCountEl) {
+                                cartCountEl.innerText = data.cartCount;
+                                cartCountEl.style.display = 'inline-block';
+                            }
+
+                            // Optional: Show simple toast or alert
+                            // alert(data.success); // Too intrusive? 
+                            // Restoration
+                            button.innerHTML = '<i class="fas fa-check"></i> Eklendi';
+                            setTimeout(() => {
+                                button.innerHTML = originalText;
+                                button.disabled = false;
+                            }, 2000);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        button.disabled = false;
+                        button.innerHTML = originalText;
+                    });
+            });
+        });
+    });
+</script>
