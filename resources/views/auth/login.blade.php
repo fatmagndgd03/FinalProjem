@@ -120,9 +120,7 @@
                                 <div class="auth-cover">
                                     <div>
                                         <h2 style="color: white; font-size: 32px; margin-bottom: 20px;">Hoş Geldiniz!</h2>
-                                        <p style="color: rgba(255,255,255,0.9); font-size: 16px;">Appvilla ile işlerinizi
-                                            yönetmek artık çok daha kolay. Hemen giriş yapın ve özelliklerimizi keşfedin.
-                                        </p>
+                                        <p style="color: rgba(255,255,255,0.9); font-size: 16px;">Garden Flowers ile şönil çiçeklerin büyüleyici dünyasına adım atın. Hemen giriş yapın ve koleksiyonumuzu keşfedin.</p>
                                         <img src="{{ asset('assets/images/hero/phone.png') }}" alt="App Preview"
                                             style="max-width: 200px; margin-top: 30px;">
                                     </div>

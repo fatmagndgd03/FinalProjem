@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $category->ad . ' - Appvilla')
+@section('title', $category->ad . ' - Garden Flowers')
 
 @section('content')
     <!-- Start Product Area -->
