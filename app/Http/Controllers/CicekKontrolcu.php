@@ -12,7 +12,13 @@ class CicekKontrolcu extends Controller
     public function index()
     {
         $products = \App\Models\Cicek::where('aktif_mi', true)->with('kategori')->orderBy('created_at', 'desc')->paginate(12);
-        return view('anasayfa', compact('products'));
+
+        $userFavorites = [];
+        if (\Illuminate\Support\Facades\Auth::check()) {
+            $userFavorites = \Illuminate\Support\Facades\Auth::user()->favorites()->pluck('cicekler.id')->toArray();
+        }
+
+        return view('anasayfa', compact('products', 'userFavorites'));
     }
 
     /**
@@ -21,7 +27,13 @@ class CicekKontrolcu extends Controller
     public function show($slug)
     {
         $product = \App\Models\Cicek::where('slug', $slug)->where('aktif_mi', true)->firstOrFail();
-        return view('urun-detay', compact('product'));
+
+        $isFavorite = false;
+        if (\Illuminate\Support\Facades\Auth::check()) {
+            $isFavorite = \Illuminate\Support\Facades\Auth::user()->favorites()->where('cicekler.id', $product->id)->exists();
+        }
+
+        return view('urun-detay', compact('product', 'isFavorite'));
     }
 
     /**
@@ -35,6 +47,11 @@ class CicekKontrolcu extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(12);
 
-        return view('anasayfa', compact('products', 'category'));
+        $userFavorites = [];
+        if (\Illuminate\Support\Facades\Auth::check()) {
+            $userFavorites = \Illuminate\Support\Facades\Auth::user()->favorites()->pluck('cicekler.id')->toArray();
+        }
+
+        return view('kategori', compact('products', 'category', 'userFavorites'));
     }
 }

@@ -105,34 +105,6 @@
                 display: none;
             }
         }
-
-        <style>
-
-        /* Auth Page Specific Styles */
-        .auth-section {
-            min-height: 80vh;
-            display: flex;
-            align-items: center;
-            background-color: #fff;
-        }
-
-        /* Navbar Customization */
-        .header.navbar-area {
-            border-bottom: 2px solid #ffffff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Ensure nav items are visible and spaced */
-        .navbar-nav .nav-item {
-            display: flex;
-            align-items: center;
-        }
-
-        @media (max-width: 991px) {
-            .auth-cover {
-                display: none;
-            }
-        }
     </style>
 @endsection
 

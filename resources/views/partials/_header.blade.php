@@ -31,6 +31,14 @@
             height: auto;
         }
 
+        .navbar-brand img {
+            max-height: 75px;
+            width: auto;
+            position: relative;
+            top: 15px;
+            /* Daha da aşağı kaydırıldı */
+        }
+
         /* 4. Collapse Area */
         .navbar-collapse {
             align-items: stretch !important;
@@ -75,8 +83,89 @@
         /* 6. Auth Buttons: Center Alignment */
         .navbar-nav.ms-auto {
             align-self: center !important;
-            /* Center the auth buttons block */
             margin-bottom: 0 !important;
+            display: flex !important;
+            gap: 20px !important;
+            /* Normalde daha ayrık */
+            align-items: center !important;
+        }
+
+        /* Remove default margins to trust gap */
+        .navbar-nav.ms-auto .nav-item {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+
+        /* 7. Dropdown Menu Links Override (Fix visibility) */
+        #nav-main-links .sub-menu {
+            min-width: 160px !important;
+            padding: 5px 0 !important;
+        }
+
+        #nav-main-links .sub-menu .nav-item a {
+            color: #333333 !important;
+            font-size: 14px !important;
+            padding: 5px 12px !important;
+            display: block;
+        }
+
+        #nav-main-links .sub-menu .nav-item a:hover {
+            color: #FF6B81 !important;
+            background-color: #f9f9f9 !important;
+        }
+
+        /* 8. Sticky Header Override */
+        .header.navbar-area.sticky {
+            background-color: #ffffff !important;
+            padding: 10px 0 !important;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            position: fixed !important;
+            top: 0;
+            width: 100%;
+            z-index: 999;
+        }
+
+        /* Sticky: Link Colors */
+        .header.navbar-area.sticky #nav-main-links .nav-item a {
+            color: #333333 !important;
+        }
+
+        .header.navbar-area.sticky #nav-main-links .nav-item a:hover {
+            color: #FF6B81 !important;
+        }
+
+        /* Sticky: Logo Sizing */
+        .header.navbar-area.sticky .navbar-brand img {
+            max-height: 70px !important;
+            width: auto !important;
+            max-width: none !important;
+        }
+
+        /* Sticky: Auth Buttons Spacing */
+        /* Sticky: Auth Buttons Spacing */
+        /* Sticky: Auth Buttons Spacing */
+        .header.navbar-area.sticky .navbar-nav.ms-auto {
+            display: flex !important;
+            gap: 15px !important;
+            /* Biraz ferahlatıldı */
+            align-items: center !important;
+            margin-left: 30px !important;
+            /* Sol menüden uzaklaştırıldı */
+        }
+
+        /* Base Styles for Auth Buttons (Smooth Transition) */
+        .btn-auth-custom,
+        .btn-alt {
+            transition: all 0.4s ease !important;
+            border-radius: 30px !important;
+            /* Her zaman yuvarlak */
+        }
+
+        /* Sticky: Reduce Button Sizes */
+        .header.navbar-area.sticky .btn-auth-custom,
+        .header.navbar-area.sticky .btn-alt {
+            padding: 8px 15px !important;
+            font-size: 14px !important;
         }
     </style>
 
@@ -89,7 +178,8 @@
                     <nav class="navbar navbar-expand-lg">
                         <!-- Min height to ensure logo has space to center -->
                         <a class="navbar-brand" href="{{ route('home') }}">
-                            <img id="header-logo" src="{{ asset('assets/images/logo/white-logo.svg') }}" alt="Logo">
+                            <img id="header-logo" src="{{ asset('assets/images/logo/garden-flowers-ps.png') }}"
+                                alt="Garden Flowers">
                         </a>
 
                         <!-- ... rest of navbar ... -->
@@ -110,7 +200,7 @@
                                         aria-label="Toggle navigation">Anasayfa</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('home') }}" aria-label="Toggle navigation">Ürünler</a>
+                                    <a href="{{ route('home') }}#products" aria-label="Toggle navigation">Ürünler</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="dd-menu collapsed" href="javascript:void(0)" data-bs-toggle="collapse"
@@ -132,16 +222,23 @@
                                 </li>
                                 <!-- Blog tab added here as requested -->
                                 <li class="nav-item">
-                                    <a href="javascript:void(0)" aria-label="Toggle navigation">Blog</a>
+                                    <a href="{{ route('blog') }}" aria-label="Toggle navigation">Blog</a>
                                 </li>
                             </ul>
 
                             <!-- Group 3: Auth Buttons (Centered) -->
                             <ul class="navbar-nav ms-auto align-items-center">
+                                <!-- Favorites Icon -->
+                                <li class="nav-item">
+                                    <a href="{{ route('favoriler') }}" id="header-fav-target" class="btn-auth-custom"
+                                        style="display: flex; align-items: center; justify-content: center;">
+                                        <i class="lni lni-heart"></i>
+                                    </a>
+                                </li>
                                 <!-- Cart Icon -->
                                 <li class="nav-item">
                                     <a href="{{ route('sepet.index') }}" class="btn-auth-custom"
-                                        style="display: flex; align-items: center; justify-content: center; margin-right: 5px;">
+                                        style="display: flex; align-items: center; justify-content: center;">
                                         <i class="lni lni-cart"></i>
                                         <span id="cart-count" class="ms-1 badge bg-danger rounded-pill"
                                             style="{{ session('sepet') ? '' : 'display:none;' }}">{{ session('sepet') ? count(session('sepet')) : 0 }}</span>
@@ -152,7 +249,7 @@
                                 @auth
                                     @if(Auth::user()->role === 'admin')
                                         <li class="nav-item">
-                                            <a href="{{ route('admin.products.index') }}" class="btn-auth-custom">Admin
+                                            <a href="{{ route('admin.users.index') }}" class="btn-auth-custom">Admin
                                                 Paneli</a>
                                         </li>
                                     @endif
@@ -242,6 +339,22 @@
                         button.innerHTML = originalText;
                     });
             });
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        // ... (existing cart logic) ...
+
+        // Sticky Header Logo Swap
+        window.addEventListener('scroll', function () {
+            var header = document.querySelector('.header');
+            var logo = document.getElementById('header-logo');
+            var sticky = header.offsetTop;
+
+            if (window.pageYOffset > sticky) {
+                logo.src = "{{ asset('assets/images/logo/garden-flowers-pink.png') }}";
+            } else {
+                logo.src = "{{ asset('assets/images/logo/garden-flowers-ps.png') }}";
+            }
         });
     });
 </script>

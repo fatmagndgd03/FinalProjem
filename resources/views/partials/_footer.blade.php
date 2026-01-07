@@ -4,90 +4,53 @@
     <div class="footer-top">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4 col-md-4 col-12">
-                    <!-- Single Widget -->
+                <!-- About Widget -->
+                <div class="col-lg-4 col-md-6 col-12">
                     <div class="single-footer f-about">
                         <div class="logo">
-                            <a href="index.html">
-                                <img src="{{ asset('assets/images/logo/white-logo.svg') }}" alt="#">
+                            <a href="{{ route('home') }}">
+                                <h3 style="color: white; font-weight: bold;">Garden Flowers</h3>
                             </a>
                         </div>
-                        <p>Making the world a better place through constructing elegant hierarchies.</p>
+                        <p>Doğanın güzelliğini el emeğiyle buluşturuyoruz. Solmayan şönil çiçeklerimizle sevdiklerinize
+                            kalıcı ve zarif bir hediye verin.</p>
                         <ul class="social">
                             <li><a href="javascript:void(0)"><i class="lni lni-facebook-filled"></i></a></li>
-                            <li><a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a></li>
                             <li><a href="javascript:void(0)"><i class="lni lni-instagram"></i></a></li>
-                            <li><a href="javascript:void(0)"><i class="lni lni-linkedin-original"></i></a></li>
-                            <li><a href="javascript:void(0)"><i class="lni lni-youtube"></i></a></li>
-                            <li><a href="javascript:void(0)"><i class="lni lni-pinterest"></i></a></li>
+                            <li><a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a></li>
                         </ul>
-                        <p class="copyright-text">Designed and Developed by <a href="https://uideck.com/" rel="nofollow"
-                                target="_blank">UIdeck</a>. <br> Distributed by <a href="https://themewagon.com"
-                                target="_blank">ThemeWagon</a>
-                        </p>
-                    </div>
-                    <!-- End Single Widget -->
-                </div>
-                <div class="col-lg-8 col-md-8 col-12">
-                    <div class="row">
-                        <div class="col-lg-3 col-md-6 col-12">
-                            <!-- Single Widget -->
-                            <div class="single-footer f-link">
-                                <h3>Solutions</h3>
-                                <ul>
-                                    <li><a href="javascript:void(0)">Marketing</a></li>
-                                    <li><a href="javascript:void(0)">Analytics</a></li>
-                                    <li><a href="javascript:void(0)">Commerce</a></li>
-                                    <li><a href="javascript:void(0)">Insights</a></li>
-                                    <li><a href="javascript:void(0)">Promotion</a></li>
-                                </ul>
-                            </div>
-                            <!-- End Single Widget -->
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-12">
-                            <!-- Single Widget -->
-                            <div class="single-footer f-link">
-                                <h3>Support</h3>
-                                <ul>
-                                    <li><a href="javascript:void(0)">Pricing</a></li>
-                                    <li><a href="javascript:void(0)">Documentation</a></li>
-                                    <li><a href="javascript:void(0)">Guides</a></li>
-                                    <li><a href="javascript:void(0)">API Status</a></li>
-                                    <li><a href="javascript:void(0)">Live Support</a></li>
-                                </ul>
-                            </div>
-                            <!-- End Single Widget -->
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-12">
-                            <!-- Single Widget -->
-                            <div class="single-footer f-link">
-                                <h3>Company</h3>
-                                <ul>
-                                    <li><a href="javascript:void(0)">About Us</a></li>
-                                    <li><a href="javascript:void(0)">Our Blog</a></li>
-                                    <li><a href="javascript:void(0)">Jobs</a></li>
-                                    <li><a href="javascript:void(0)">Press</a></li>
-                                    <li><a href="javascript:void(0)">Contact Us</a></li>
-                                </ul>
-                            </div>
-                            <!-- End Single Widget -->
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-12">
-                            <!-- Single Widget -->
-                            <div class="single-footer f-link">
-                                <h3>Legal</h3>
-                                <ul>
-                                    <li><a href="javascript:void(0)">Terms & Conditions</a></li>
-                                    <li><a href="javascript:void(0)">Privacy Policy</a></li>
-                                    <li><a href="javascript:void(0)">Catering Services</a></li>
-                                    <li><a href="javascript:void(0)">Customer Relations</a></li>
-                                    <li><a href="javascript:void(0)">Innovation</a></li>
-                                </ul>
-                            </div>
-                            <!-- End Single Widget -->
-                        </div>
+                        <p class="copyright-text">© 2026 Garden Flowers.<br> Tüm Hakları Saklıdır.</p>
                     </div>
                 </div>
+                <!-- End About Widget -->
+
+                <!-- Quick Links Widget -->
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="single-footer f-link">
+                        <h3>Hızlı Erişim</h3>
+                        <ul>
+                            <li><a href="{{ route('home') }}">Anasayfa</a></li>
+                            <li><a href="{{ route('hakkimizda') }}">Hakkımızda</a></li>
+                            <li><a href="{{ route('blog') }}">Blog</a></li>
+                            <li><a href="{{ route('iletisim') }}">İletişim</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- End Quick Links Widget -->
+
+                <!-- Contact Widget -->
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="single-footer f-link">
+                        <h3>İletişim</h3>
+                        <ul style="color: #bbb;">
+                            <li class="mb-2"><i class="lni lni-map-marker me-2"></i> Bağdat Caddesi No: 123, Kadıköy,
+                                İstanbul</li>
+                            <li class="mb-2"><i class="lni lni-phone me-2"></i> +90 (212) 123 45 67</li>
+                            <li class="mb-2"><i class="lni lni-envelope me-2"></i> info@cicekdukkani.com</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- End Contact Widget -->
             </div>
         </div>
     </div>

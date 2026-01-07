@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Sepet;
 use App\Models\Favori;
+use App\Models\Address;
+use App\Models\Order;
 
 class User extends Authenticatable
 {
@@ -44,10 +46,10 @@ class User extends Authenticatable
         return $this->hasMany(Sepet::class);
     }
 
-    // Favori İlişkisi: Bir kullanıcının birden çok favori öğesi olabilir
-    public function favoriler()
+    // Favori İlişkisi: Kullanıcının favori çiçekleri
+    public function favorites()
     {
-        return $this->hasMany(Favori::class);
+        return $this->belongsToMany(\App\Models\Cicek::class, 'favorites', 'user_id', 'cicek_id')->withTimestamps();
     }
 
     /**

@@ -16,12 +16,22 @@
     <link rel="stylesheet" href="{{ asset('assets/css/tiny-slider.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/glightbox.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
     @yield('styles')
     <style>
-        .header.navbar-area {
-            border-bottom: 4px solid #ffffff !important;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        /* Global styles can go here */
+        .fly-img {
+            position: absolute;
+            z-index: 9999;
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+            pointer-events: none;
+            transition: all 1s ease-in-out;
+            opacity: 0.8;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
@@ -46,114 +56,18 @@
     <!-- /End Preloader -->
 
     @section('header')
-    <!-- Start Header Area -->
-    <header class="header navbar-area">
-        <div class="container-fluid" style="padding-left: 30px; padding-right: 30px;"> <!-- Increased width -->
-            <div class="row align-items-center">
-                <div class="col-lg-12">
-                    <div class="nav-inner">
-                        <!-- Start Navbar -->
-                        <nav class="navbar navbar-expand-lg">
-                            <a class="navbar-brand" href="{{ route('home') }}" style="margin-right: 30px;">
-                                <img src="{{ asset('assets/images/logo/white-logo.svg') }}" alt="Logo">
-                            </a>
-                            <button class="navbar-toggler mobile-menu-btn" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                                aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="toggler-icon"></span>
-                                <span class="toggler-icon"></span>
-                                <span class="toggler-icon"></span>
-                            </button>
-                            <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
-                                <!-- LEFT GROUP: Main Navigation (Logo's neighbor) -->
-                                <ul class="navbar-nav me-auto">
-                                    <li class="nav-item">
-                                        <a href="{{ route('home') }}" aria-label="Toggle navigation">Anasayfa</a>
-                                    </li>
-                                    <!-- Other main info links can go here (e.g., Features, Pricing) -->
-                                </ul>
-
-                                <!-- RIGHT GROUP: Auth Buttons (Far Right) -->
-                                <ul class="navbar-nav ms-auto">
-                                    @auth
-                                        @if (auth()->user()->role === 'admin')
-                                            <li class="nav-item">
-                                                <a href="{{ route('admin.products.index') }}">Admin Paneli</a>
-                                            </li>
-                                        @endif
-                                        <li class="nav-item">
-                                            <a href="{{ route('profile') }}">Profilim</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="javascript:void(0)"
-                                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                                <i class="lni lni-exit"></i> Çıkış Yap
-                                            </a>
-                                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                                class="d-none">
-                                                @csrf
-                                            </form>
-                                        </li>
-                                    @endauth
-
-                                    @guest
-                                        <li class="nav-item">
-                                            <a href="{{ route('login') }}">Giriş</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{ route('register') }}">Kayıt Ol</a>
-                                        </li>
-                                    @endguest
-                                </ul>
-                            </div> <!-- navbar collapse -->
-                            <!-- Removed standalone button container to force everything into the navbar alignment -->
-                        </nav>
-                        <!-- End Navbar -->
-                    </div>
-                </div>
-            </div> <!-- row -->
-        </div> <!-- container -->
-    </header>
-    <!-- End Header Area -->
+    @include('partials._header')
     @show
 
 
     <!-- Content Wrapper -->
-    <div style="padding-top: 150px; padding-bottom: 50px; min-height: 60vh;">
+    <div style="@yield('content-wrapper-style', 'padding-top: 150px; padding-bottom: 50px; min-height: 60vh;')">
         @yield('content')
     </div>
     <!-- End Content Wrapper -->
 
     <!-- Start Footer Area -->
-    <footer class="footer">
-        <!-- Start Footer Top -->
-        <div class="footer-top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 col-md-4 col-12">
-                        <!-- Single Widget -->
-                        <div class="single-footer f-about">
-                            <div class="logo">
-                                <a href="{{ route('home') }}">
-                                    <img src="{{ asset('assets/images/logo/white-logo.svg') }}" alt="#">
-                                </a>
-                            </div>
-                            <p>Zarif hiyerarşiler inşa ederek dünyayı daha iyi bir yer haline getiriyoruz.</p>
-                            <ul class="social">
-                                <li><a href="javascript:void(0)"><i class="lni lni-facebook-filled"></i></a></li>
-                                <li><a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a></li>
-                                <li><a href="javascript:void(0)"><i class="lni lni-instagram"></i></a></li>
-                                <li><a href="javascript:void(0)"><i class="lni lni-linkedin-original"></i></a></li>
-                            </ul>
-                        </div>
-                        <!-- End Single Widget -->
-                    </div>
-                    <!-- Footer Linkleri Kısaltıldı -->
-                </div>
-            </div>
-        </div>
-        <!--/ End Footer Top -->
-    </footer>
+    @include('partials._footer')
     <!--/ End Footer Area -->
 
     <!-- ========================= scroll-top ========================= -->
@@ -168,6 +82,63 @@
     <script src="{{ asset('assets/js/glightbox.min.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
     @yield('scripts')
+
+    <script>
+        // Global Fly Animation Function
+        function flyToElement(flyer, flyingTo) {
+            var $func = $(this);
+            var divider = 3;
+            var flyerClone = $(flyer).clone();
+
+            $(flyerClone).css({ position: 'absolute', top: $(flyer).offset().top + "px", left: $(flyer).offset().left + "px", opacity: 1, 'z-index': 1000 });
+            $('body').append($(flyerClone));
+
+            var gotoX = $(flyingTo).offset().left + ($(flyingTo).width() / 2) - ($(flyer).width() / divider) / 2;
+            var gotoY = $(flyingTo).offset().top + ($(flyingTo).height() / 2) - ($(flyer).height() / divider) / 2;
+
+            $(flyerClone).animate({
+                opacity: 0.4,
+                left: gotoX,
+                top: gotoY,
+                width: $(flyer).width() / divider,
+                height: $(flyer).height() / divider
+            }, 1000,
+                function () {
+                    $(flyerClone).remove();
+                });
+        }
+
+        // Pure Vanilla JS version for dependency-free animation
+        function animateFly(startEl, targetEl) {
+            if (!startEl || !targetEl) return;
+
+            const clone = startEl.cloneNode(true);
+            const startRect = startEl.getBoundingClientRect();
+            const targetRect = targetEl.getBoundingClientRect();
+
+            clone.classList.add('fly-img');
+            clone.style.width = startRect.width + 'px';
+            clone.style.height = startRect.height + 'px';
+            clone.style.top = (startRect.top + window.scrollY) + 'px';
+            clone.style.left = (startRect.left + window.scrollX) + 'px';
+            clone.style.position = 'absolute'; // Ensure it's absolute
+
+            document.body.appendChild(clone);
+
+            // Force reflow
+            void clone.offsetWidth;
+
+            clone.style.top = (targetRect.top + window.scrollY + 10) + 'px';
+            clone.style.left = (targetRect.left + window.scrollX + 10) + 'px';
+            clone.style.width = '30px';
+            clone.style.height = '30px';
+            clone.style.opacity = '0.5';
+
+            setTimeout(() => {
+                clone.remove();
+            }, 1000); // Match transition duration
+        }
+    </script>
 </body>
 
 </html>

@@ -13,12 +13,16 @@ Route::get('/urun/{slug}', [CicekKontrolcu::class, 'show'])->name('urun.detay');
 Route::get('/kategori/{slug}', [CicekKontrolcu::class, 'category'])->name('kategori');
 Route::view('/hakkimizda', 'hakkimizda')->name('hakkimizda');
 Route::view('/iletisim', 'iletisim')->name('iletisim');
+Route::get('/blog', [App\Http\Controllers\BlogController::class, 'index'])->name('blog');
+Route::get('/blog/{slug}', [App\Http\Controllers\BlogController::class, 'show'])->name('blog.show');
 
 // --- SEPET ROTALARI ---
 Route::get('sepet', [App\Http\Controllers\SepetController::class, 'index'])->name('sepet.index');
 Route::post('sepet-ekle', [App\Http\Controllers\SepetController::class, 'add'])->name('sepet.add');
 Route::post('sepet-guncelle', [App\Http\Controllers\SepetController::class, 'update'])->name('sepet.update');
 Route::post('sepet-sil', [App\Http\Controllers\SepetController::class, 'remove'])->name('sepet.remove');
+Route::post('favori-toggle', [App\Http\Controllers\FavoriteController::class, 'toggle'])->name('favori.toggle');
+Route::get('favoriler', [App\Http\Controllers\FavoriteController::class, 'index'])->name('favoriler');
 
 // --- KİMLİK DOĞRULAMA (AUTH) ROTALARI ---
 
@@ -48,6 +52,10 @@ Route::middleware('auth')->group(function () {
 
     // Admin Rotaları
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/', function () {
+            return redirect()->route('admin.users.index');
+        });
         Route::resource('products', \App\Http\Controllers\Admin\ProductController::class);
+        Route::resource('users', \App\Http\Controllers\Admin\AdminUserController::class)->only(['index', 'store', 'destroy']);
     });
 });

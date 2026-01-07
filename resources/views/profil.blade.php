@@ -6,11 +6,11 @@
     <style>
         .profile-header {
             background: linear-gradient(135deg, #FF6B81 0%, #FF8E9D 100%);
-            padding: 60px 0;
+            padding: 30px 0;
             text-align: center;
             color: white;
-            margin-bottom: 40px;
-            border-radius: 0 0 50px 50px;
+            margin-bottom: 30px;
+            border-radius: 0 0 30px 30px;
         }
 
         .profile-avatar {
@@ -107,26 +107,15 @@
 
 @section('header')
     @if(Auth::user()->role === 'admin')
-        <!-- Admin-Specific Clean Header (Logo Only) -->
-        <header class="header navbar-area" style="background: #fff; border-bottom: 1px solid #eee; padding: 0;">
-            <div class="container-fluid" style="padding-left: 30px; padding-right: 30px;">
-                <div class="row align-items-center">
-                    <div class="col-lg-12">
-                        <div class="nav-inner">
-                            <nav class="navbar navbar-expand-lg">
-                                <a class="navbar-brand" href="{{ route('home') }}" style="margin-right: 30px;">
-                                    <img src="{{ asset('assets/images/logo/logo.svg') }}" alt="Logo" style="height: 40px;">
-                                </a>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
+        <!-- Admin header removed as requested -->
     @else
         @parent
     @endif
 @endsection
+
+@if(Auth::user()->role === 'admin')
+@section('content-wrapper-style', 'padding-top: 0; padding-bottom: 50px; min-height: 60vh;')
+@endif
 
 @section('content')
 
@@ -144,6 +133,12 @@
             <div class="profile-avatar">
                 {{ strtoupper(substr($user->name, 0, 1)) }}
             </div>
+            @if(Auth::user()->role === 'admin')
+                <div style="margin-bottom: 10px;">
+                    <span
+                        style="background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; font-size: 14px; font-weight: 600;">Yönetici</span>
+                </div>
+            @endif
             <h2>{{ $user->name }}</h2>
             <p class="mb-0">{{ $user->email }}</p>
         </div>
@@ -178,7 +173,7 @@
                                 </button>
                             @endif
                             @if($user->role === 'admin')
-                                <a href="{{ route('admin.products.index') }}" class="nav-link text-center"
+                                <a href="{{ route('admin.users.index') }}" class="nav-link text-center"
                                     style="background-color: #FF6B81; color: white;">
                                     <i class="lni lni-cog me-2"></i> Admin Paneli
                                 </a>
